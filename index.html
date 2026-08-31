@@ -1,1 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise 🎂❤️</title>
 
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ffd6e7, #fff0f6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #333;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 92%;
+  max-width: 600px;
+  padding: 30px 20px;
+}
+
+.card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 25px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+h1 {
+  color: #e75480;
+  font-size: 32px;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+button {
+  border: none;
+  border-radius: 30px;
+  padding: 14px 25px;
+  margin: 10px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.yes {
+  background: #ff4f81;
+  color: white;
+}
+
+.no {
+  background: #eeeeee;
+  color: #333;
+}
+
+.hidden {
+  display: none;
+}
+
+#reaction {
+  min-height: 30px;
+  color: #e75480;
+  font-weight: bold;
+}
+
+.surprise {
+  animation: fadeIn 1.5s ease;
+}
+
+.photo {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 20px;
+  margin: 18px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.typing {
+  min-height: 100px;
+  white-space: pre-wrap;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.heart {
+  position: fixed;
+  animation: fall 4s linear forwards;
+  font-size: 25px;
+  top: -30px;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- FIRST SCREEN -->
+  <div class="card" id="question">
+
+    <div style="font-size:55px;">🎁</div>
+
+    <h1>Hey you... 👀❤️</h1>
+
+    <p>
+      I have a little surprise for you... 🥹💗
+    </p>
+
+    <p>
+      Do you want to see it? 👀✨
+    </p>
+
+    <button class="yes" onclick="showSurprise()">
+      YES ❤️
+    </button>
+
+    <button class="no" id="noButton" onclick="noClicked()">
+      NO 😭
+    </button>
+
+    <p id="reaction"></p>
+
+  </div>
+
+
+  <!-- SURPRISE SCREEN -->
+  <div class="card surprise hidden" id="surprise">
+
+    <div style="font-size:60px;">🎉🎂❤️</div>
+
+    <h1>HAPPY BIRTHDAY! 🥳</h1>
+
+    <p id="typedMessage" class="typing"></p>
+
+    <!--
+    PHOTO SECTION
+
+    Replace the image names below with your own uploaded
+    photo filenames later.
+    -->
+
+    <img class="photo" src="photo1.jpg" alt="Memory ❤️">
+
+    <p>
+      A beautiful memory... 🥹❤️
+    </p>
+
+    <img class="photo" src="photo2.jpg" alt="Memory ❤️">
+
+    <p>
+      And another one... 📸✨
+    </p>
+
+    <img class="photo" src="photo3.jpg" alt="Memory ❤️">
+
+    <h2>
+      Once again... HAPPY BIRTHDAY! 🎂❤️
+    </h2>
+
+    <p>
+      💗✨🥹🎉🎈
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let noCount = 0;
+
+const reactions = [
+  "Are you sure? 🥺👉🏻👈🏻",
+  "Reallyyy? 😭💔",
+  "Pleaseee say yes! 🥹❤️",
+  "Think again 😂",
+  "Don't do this to me 😭",
+  "One more chance? 🥺💗",
+  "Okay okay... TRY AGAIN! 😂🔄"
+];
+
+function noClicked() {
+
+  const button = document.getElementById("noButton");
+  const reaction = document.getElementById("reaction");
+
+  reaction.innerText = reactions[noCount % reactions.length];
+
+  noCount++;
+
+  if (noCount >= 3) {
+    button.innerText = "RETRY 🔄";
+  }
+
+  if (noCount >= 6) {
+    button.innerText = "YES? 🥹❤️";
+  }
+}
+
+
+function showSurprise() {
+
+  document.getElementById("question").classList.add("hidden");
+
+  document.getElementById("surprise").classList.remove("hidden");
+
+  startTyping();
+
+  createHearts();
+}
+
+
+function startTyping() {
+
+  const message =
+`Dear you ❤️,
+
+Happy Birthday! 🎂🥳
+
+I hope your special day is filled with happiness,
+smiles and beautiful memories. 🥹💗
+
+You are truly special to me,
+and I wanted to make this little surprise just for you. ✨
+
+Happy Birthday once again! 🎉❤️`;
+
+  const box = document.getElementById("typedMessage");
+
+  let i = 0;
+
+  function type() {
+
+    if (i < message.length) {
+
+      box.innerText += message.charAt(i);
+
+      i++;
+
+      setTimeout(type, 35);
+
+    }
+
+  }
+
+  type();
+}
+
+
+function createHearts() {
+
+  const emojis = ["❤️","💗","💖","✨","🎉","🥳","🎈"];
+
+  for (let i = 0; i < 30; i++) {
+
+    const heart = document.createElement("div");
+
+    heart.className = "heart";
+
+    heart.innerText =
+      emojis[Math.floor(Math.random() * emojis.length)];
+
+    heart.style.left =
+      Math.random() * 100 + "vw";
+
+    heart.style.animationDuration =
+      (2 + Math.random() * 3) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 5000);
+  }
+}
+
+</script>
+
+</body>
+  </html>
