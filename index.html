@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Birthday Surprise ❤️</title>
 
 <style>
@@ -16,6 +15,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  overflow-x: hidden;
 }
 
 .card {
@@ -42,6 +42,7 @@ button {
   padding: 14px 28px;
   margin: 8px;
   font-size: 17px;
+  cursor: pointer;
 }
 
 .yes {
@@ -51,10 +52,23 @@ button {
 
 .no {
   background: #eeeeee;
+  color: #333;
 }
 
 .hidden {
   display: none;
+}
+
+#reaction {
+  color: #e75480;
+  font-weight: bold;
+  min-height: 35px;
+}
+
+#typedMessage {
+  text-align: left;
+  white-space: pre-wrap;
+  line-height: 1.8;
 }
 
 .photo {
@@ -63,23 +77,51 @@ button {
   margin: 20px auto;
   border-radius: 20px;
   display: block;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
-#message {
-  text-align: left;
-  white-space: pre-wrap;
-}
-
-#reaction {
+.countdown {
+  font-size: 100px;
   color: #e75480;
   font-weight: bold;
+  animation: pop 1s ease;
+}
+
+.dance {
+  font-size: 80px;
+  animation: dance 0.7s infinite alternate;
+}
+
+@keyframes dance {
+  from {
+    transform: rotate(-12deg) translateY(0);
+  }
+  to {
+    transform: rotate(12deg) translateY(-12px);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="card" id="question">
+<!-- SCREEN 1 -->
+
+<div class="card" id="screen1">
 
   <div style="font-size:60px;">🎁</div>
 
@@ -90,124 +132,157 @@ button {
   </p>
 
   <p>
-    Do you want to see it? 👀💗
+    Do you want to see? 👀💗
   </p>
 
-  <button class="yes" onclick="showSurprise()">
+  <button class="yes" onclick="firstYes()">
     YES ❤️
   </button>
 
-  <button class="no" onclick="noClicked()">
+  <button class="no" onclick="firstNo()">
     NO 😭
   </button>
 
-  <p id="reaction"></p>
+  <p id="reaction1"></p>
 
 </div>
 
 
-<div class="card hidden" id="surprise">
+<!-- SCREEN 2 -->
+
+<div class="card hidden" id="screen2">
+
+  <div class="dance">💃🏻</div>
+
+  <h1>Are you excited? 👀✨</h1>
+
+  <p>
+    I hope you are... 🥹❤️
+  </p>
+
+  <button class="yes" onclick="excitedYes()">
+    YES ❤️
+  </button>
+
+  <button class="no" onclick="excitedNo()">
+    NO 😭
+  </button>
+
+  <p id="reaction2"></p>
+
+</div>
+
+
+<!-- SCREEN 3 : AUTOMATIC COUNTDOWN -->
+
+<div class="card hidden" id="countdownScreen">
+
+  <div id="countdown" class="countdown">3</div>
+
+</div>
+
+
+<!-- SCREEN 4 -->
+
+<div class="card hidden" id="screen4">
+
+  <div style="font-size:70px;">👀❤️</div>
+
+  <h1>Did you want to see? 🥹✨</h1>
+
+  <button class="yes" onclick="finalYes()">
+    YES ❤️
+  </button>
+
+</div>
+
+
+<!-- FINAL SURPRISE -->
+
+<div class="card hidden" id="finalScreen">
 
   <div style="font-size:60px;">🎉🎂❤️</div>
 
   <h1>HAPPY BIRTHDAYYY! 🥳❤️</h1>
 
-  <p id="message"></p>
+  <p id="typedMessage"></p>
 
-  09.png"
   <img
-  class="photo"
-  src="./IMG-20260830-WA0014.jpg"
-  alt="Our memory ❤️"
->
+    class="photo"
+    src="IMG-20260830-WA0014.jpg"
+    alt="Memory ❤️"
+  >
 
-<img
-  class="photo"
-  src="./Untitled94_20260723193909.png"
-  alt="Beautiful memory ❤️"
->
->
+  <img
+    class="photo"
+    src="Untitled94_20260723193909.png"
+    alt="Beautiful memory ❤️"
+  >
 
   <h2>Happiest Birthday once again! 🎂❤️</h2>
 
-  <p>🥹🫶🏻✨🎈🎉</p>
+  <p>
+    🥹🫶🏻✨🎈🎉💗
+  </p>
 
 </div>
 
 
 <script>
 
-let noCount = 0;
+let no1 = 0;
+let no2 = 0;
 
-const reactions = [
+const reactions1 = [
   "Are you sure? 🥺👉🏻👈🏻",
   "Reallyyy? 😭💔",
   "Pleaseee say yes! 🥹❤️",
   "Think again 😂",
-  "Why NO? 😭😂",
-  "One more chance? 🥺🫶🏻",
-  "TRY AGAIN! 🔄😂"
+  "Come onnn 😭🫶🏻",
+  "Try again 🔄😂"
 ];
 
-function noClicked() {
+const reactions2 = [
+  "Are you sure? 🥺",
+  "Don't lieee 😭😂",
+  "I know you're excited 👀❤️",
+  "Really? 🥹",
+  "Say YESSS! 🫶🏻",
+  "Try again 😂❤️"
+];
 
-  document.getElementById("reaction").innerText =
-    reactions[noCount % reactions.length];
 
-  noCount++;
+function firstNo() {
+
+  document.getElementById("reaction1").innerText =
+    reactions1[no1 % reactions1.length];
+
+  no1++;
+
+}
+
+
+function firstYes() {
+
+  document.getElementById("screen1").classList.add("hidden");
+
+  document.getElementById("screen2").classList.remove("hidden");
 
 }
 
 
-function showSurprise() {
+function excitedNo() {
 
-  document.getElementById("question").classList.add("hidden");
+  document.getElementById("reaction2").innerText =
+    reactions2[no2 % reactions2.length];
 
-  document.getElementById("surprise").classList.remove("hidden");
-
-  typeMessage();
-
-}
-
-
-function typeMessage() {
-
-  const text =
-`Happy Birthdayyy! 🥳❤️
-
-I hope this special day brings you lots of happiness, laughter, and beautiful memories. You’re honestly one of those people who can make an ordinary day better just by being there. I’m really glad that I got to know you, and I truly value all the conversations, jokes, teasing, and random moments we’ve shared. 🫶🏻✨
-
-I hope this new year of your life brings you closer to all your dreams and gives you countless reasons to smile. Never stop being the person you are, because you’re genuinely amazing in your own way.
-
-No matter what happens or how much things change, I hope our friendship always stays the same.
-
-Have the best birthday everrr! 🎂❤️
-
-And once again, happiest birthday to you! 🥹🫶🏻✨`;
-
-  let i = 0;
-
-  const box = document.getElementById("message");
-
-  function type() {
-
-    if (i < text.length) {
-
-      box.innerText += text.charAt(i);
-
-      i++;
-
-      setTimeout(type, 20);
-
-    }
-
-  }
-
-  type();
+  no2++;
 
 }
 
-</script>
 
-</body>
-</html>
+function excitedYes() {
+
+  document.getElementById("screen2").classList.add("hidden");
+
+  document.getElementById("countdownScreen").classList.remove("
